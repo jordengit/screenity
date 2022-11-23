@@ -148,6 +148,10 @@ $(document).ready(function(){
                 $(".notransition").removeClass("notransition");
             }, 500);
             
+            chrome.storage.sync.get(['autostop_time'], function(result) {
+                injectAutoStop(result.autostop_time);
+            });
+            
             // Check if countdown is enabled
             if (active) {
                 $("#"+uniqueid+" #toolbar-record").css("pointer-events", "none");
@@ -177,6 +181,25 @@ $(document).ready(function(){
         var countdowninject = "<div id='countdown'><img src='"+chrome.extension.getURL('./assets/images/3-countdown.svg')+"'></div>";
         $("#"+uniqueid).prepend(countdowninject);
         countdown(time);
+        console.debug('send event 0');
+        var evt = document.createEvent('Event');
+        evt.initEvent('myCustomEvent0', true, false);
+        // fire the event
+        document.dispatchEvent(evt);
+    }
+    // AutoStop
+    function injectAutoStop(time){
+        window.setTimeout(function(){
+            window.setTimeout(function(){
+                console.debug('send msg autostop');
+                chrome.runtime.sendMessage({type: "autostop"});
+                console.debug('send event 2');
+                var evt = document.createEvent('Event');
+                evt.initEvent('myCustomEvent2', true, false);
+                // fire the event
+                document.dispatchEvent(evt);
+            },10);
+        },time*1000);
     }
     function delay(num,time,last) {
         window.setTimeout(function(){
@@ -185,7 +208,13 @@ $(document).ready(function(){
             } else {
                 $("#"+uniqueid+" #countdown").addClass("countdown-done");
                 window.setTimeout(function(){
+                    console.debug('send msg countdown');
                     chrome.runtime.sendMessage({type: "countdown"});
+                    console.debug('send event 1');
+                    var evt = document.createEvent('Event');
+                    evt.initEvent('myCustomEvent1', true, false);
+                    // fire the event
+                    document.dispatchEvent(evt);
                 },10);
                 if (persistent) {
                     $("#"+uniqueid+" #toolbar-record").removeClass("toolbar-inactive");

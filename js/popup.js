@@ -22,6 +22,9 @@ $(document).ready(function(){
         if (result.countdown_time != 3) {
             $("#countdown-time").html(result.countdown_time + " ");
         }
+        if (result.autostop_time) {
+            $("#autostopsecond").val(result.autostop_time);  
+        }
         if (result.quality == "max") {
             $("#quality").html(chrome.i18n.getMessage("smaller_file_size"));
         } else {
@@ -209,6 +212,8 @@ $(document).ready(function(){
     
     // Start recording
     $("#record").on("click", function(){
+        var autotime = $('#autostopsecond').val();
+        chrome.storage.sync.set({autostop_time: parseInt(autotime)});
         record();
     });
     

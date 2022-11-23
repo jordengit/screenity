@@ -34,6 +34,7 @@ chrome.runtime.onInstalled.addListener(function () {
         toolbar: true,
         countdown: true,
         countdown_time: 3,
+        autostop_time: 50,
         flip: true,
         pushtotalk: false,
         camera: 0,
@@ -627,6 +628,13 @@ function countdownOver() {
     }
 }
 
+// Countdown is over / recording can start
+function autoRecordStop() {
+    if (recording) {
+        stopRecording('stop-save');
+    }
+}
+
 // Inject content when tab redirects while recording
 function pageUpdated(sender) {
     chrome.tabs.getSelected(null, function (tab) {
@@ -743,6 +751,9 @@ chrome.runtime.onMessage.addListener(
             });
         } else if (request.type == "countdown") {
             countdownOver();
+        } else if (request.type == "autostop") {
+            console.debug('request autostop trigger');
+            autoRecordStop();
         } else if (request.type == "recording-type") {
             recording_type = request.recording;
         } else if (request.type == "record-request") {
