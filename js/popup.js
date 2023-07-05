@@ -21,6 +21,7 @@ $(document).ready(function(){
         }
         if (result.countdown_time != 3) {
             $("#countdown-time").html(result.countdown_time + " ");
+            $("#schedultstart").val('2023/07/05 16:49:30');
         }
         if (result.autostop_time) {
             $("#autostopsecond").val(result.autostop_time);  
@@ -212,8 +213,13 @@ $(document).ready(function(){
     
     // Start recording
     $("#record").on("click", function(){
+        alert('start');
         var autotime = $('#autostopsecond').val();
-        chrome.storage.sync.set({autostop_time: parseInt(autotime)});
+        var schedultstart = $('#schedultstart').val();
+        var d = new Date(schedultstart);
+        var dn = new Date();
+        var sec = Math.floor((d-dn)/1000);
+        chrome.storage.sync.set({autostop_time: parseInt(autotime), countdown_time: parseInt(sec)});
         record();
     });
     

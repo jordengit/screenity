@@ -148,10 +148,6 @@ $(document).ready(function(){
                 $(".notransition").removeClass("notransition");
             }, 500);
             
-            chrome.storage.sync.get(['autostop_time'], function(result) {
-                injectAutoStop(result.autostop_time);
-            });
-            
             // Check if countdown is enabled
             if (active) {
                 $("#"+uniqueid+" #toolbar-record").css("pointer-events", "none");
@@ -159,6 +155,10 @@ $(document).ready(function(){
                     injectCountdown(result.countdown_time);
                 });
             } else {
+                chrome.storage.sync.get(['autostop_time'], function(result) {
+                    injectAutoStop(result.autostop_time);
+                });
+                
                 chrome.runtime.sendMessage({type: "countdown"});
                 if (persistent) {
                     $("#"+uniqueid+" #toolbar-record").removeClass("toolbar-inactive");
@@ -189,6 +189,7 @@ $(document).ready(function(){
     }
     // AutoStop
     function injectAutoStop(time){
+        console.debug(time + ' to auto stop.');
         window.setTimeout(function(){
             window.setTimeout(function(){
                 console.debug('send msg autostop');
@@ -204,6 +205,7 @@ $(document).ready(function(){
     function delay(num,time,last) {
         window.setTimeout(function(){
             if (!last) {
+                if(num>10) num=10;
                 $("#"+uniqueid+" #countdown img").attr("src", chrome.extension.getURL('./assets/images/'+num+'-countdown.svg'));
             } else {
                 $("#"+uniqueid+" #countdown").addClass("countdown-done");
@@ -211,6 +213,11 @@ $(document).ready(function(){
                     console.debug('send msg countdown');
                     chrome.runtime.sendMessage({type: "countdown"});
                     console.debug('send event 1');
+                    
+            chrome.storage.sync.get(['autostop_time'], function(result) {
+                injectAutoStop(result.autostop_time);
+            });
+            
                     var evt = document.createEvent('Event');
                     evt.initEvent('myCustomEvent1', true, false);
                     // fire the event
@@ -224,7 +231,7 @@ $(document).ready(function(){
         },time*1000);
     }
     function countdown(time){
-        $("#"+uniqueid+" #countdown img").attr("src", chrome.extension.getURL('./assets/images/'+time+'-countdown.svg'));
+        $("#"+uniqueid+" #countdown img").attr("src", chrome.extension.getURL('./assets/images/3-countdown.svg'));
         for (var i = 0; i <= time; i++) {
             if (i == time) {
                 delay(time-i,i,true);
