@@ -21,7 +21,9 @@ $(document).ready(function(){
         }
         if (result.countdown_time != 3) {
             $("#countdown-time").html(result.countdown_time + " ");
-            $("#schedultstart").val('2023/07/05 16:49:30');
+            var d = new Date();
+            var todaystr = d.getFullYear() + '/' + (d.getMonth()*1 +1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':00'
+            $("#schedultstart").val(todaystr);
         }
         if (result.autostop_time) {
             $("#autostopsecond").val(result.autostop_time);  
