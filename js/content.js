@@ -292,8 +292,8 @@ $(document).ready(function(){
         // Interactive FabricJs canvas initialization
         canvas = new fabric.Canvas('canvas-draw', {
             preserveObjectStacking: true,
-            height: $(document).height(),
-            width: $(document).width(),
+            height: 1080,
+            width: 1920,
             renderOnAddRemove: false
         });
         textediting = false;
