@@ -231,6 +231,10 @@ $(document).ready(function(){
         },time*1000);
     }
     function countdown(time){
+        console.debug($('#canvas-draw').height());
+        //['#canvas-freedraw', '#canvas-focus', '#canvas-draw', '.upper-canvas '].forEach(o=>{ $(o).css({'height': '1080px','width': '1920px'}) })
+        //['#canvas-freedraw', '#canvas-focus', '#canvas-draw', '.upper-canvas '].forEach((o)=>{ $(o).css({'height': '1080px','width': '1920px'}) })
+
         $("#"+uniqueid+" #countdown img").attr("src", chrome.extension.getURL('./assets/images/3-countdown.svg'));
         for (var i = 0; i <= time; i++) {
             if (i == time) {
