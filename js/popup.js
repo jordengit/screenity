@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var recording = false;
+    let recording = false;
     
     // Set up custom dropdowns
     $("#camera-select").niceSelect();
@@ -21,9 +21,9 @@ $(document).ready(function(){
         }
         if (result.countdown_time != 3) {
             $("#countdown-time").html(result.countdown_time + " ");
-            var d = new Date();
+            let d = new Date();
             d = new Date(d.getTime() + 5 * 1000);
-            var todaystr = d.getFullYear() + '/' + (d.getMonth()*1 +1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+            let todaystr = d.getFullYear() + '/' + (d.getMonth()*1 +1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
             $("#schedultstart").val(todaystr);
         }
         if (result.autostop_time) {
@@ -216,12 +216,14 @@ $(document).ready(function(){
     
     // Start recording
     $("#record").on("click", function(){
-        alert('start');
-        var autotime = $('#autostopsecond').val();
-        var schedultstart = $('#schedultstart').val();
-        var d = new Date(schedultstart);
-        var dn = new Date();
-        var sec = Math.floor((d-dn)/1000);
+        // alert('start');
+        let autotime = $('#autostopsecond').val();
+        let schedultstart = $('#schedultstart').val();
+        let d = new Date(schedultstart);
+        let dn = new Date();
+        let sec = Math.floor((d-dn)/1000);
+        if (sec < 5) sec = 5;
+        // let sec = $('#countdown-time').val();
         chrome.storage.sync.set({autostop_time: parseInt(autotime), countdown_time: parseInt(sec)});
         record();
     });

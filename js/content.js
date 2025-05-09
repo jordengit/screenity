@@ -182,7 +182,7 @@ $(document).ready(function(){
         $("#"+uniqueid).prepend(countdowninject);
         countdown(time);
         console.debug('send event 0');
-        var evt = document.createEvent('Event');
+        let evt = document.createEvent('Event');
         evt.initEvent('myCustomEvent0', true, false);
         // fire the event
         document.dispatchEvent(evt);
@@ -195,7 +195,7 @@ $(document).ready(function(){
                 console.debug('send msg autostop');
                 chrome.runtime.sendMessage({type: "autostop"});
                 console.debug('send event 2');
-                var evt = document.createEvent('Event');
+                let evt = document.createEvent('Event');
                 evt.initEvent('myCustomEvent2', true, false);
                 // fire the event
                 document.dispatchEvent(evt);
@@ -205,7 +205,7 @@ $(document).ready(function(){
     function delay(num,time,last) {
         window.setTimeout(function(){
             if (!last) {
-                if(num>10) num=10;
+                if (num > 10) num = 10;
                 $("#"+uniqueid+" #countdown img").attr("src", chrome.extension.getURL('./assets/images/'+num+'-countdown.svg'));
             } else {
                 $("#"+uniqueid+" #countdown").addClass("countdown-done");
@@ -214,11 +214,11 @@ $(document).ready(function(){
                     chrome.runtime.sendMessage({type: "countdown"});
                     console.debug('send event 1');
                     
-            chrome.storage.sync.get(['autostop_time'], function(result) {
-                injectAutoStop(result.autostop_time);
-            });
+                    chrome.storage.sync.get(['autostop_time'], function(result) {
+                        injectAutoStop(result.autostop_time);
+                    });
             
-                    var evt = document.createEvent('Event');
+                    let evt = document.createEvent('Event');
                     evt.initEvent('myCustomEvent1', true, false);
                     // fire the event
                     document.dispatchEvent(evt);
@@ -231,10 +231,6 @@ $(document).ready(function(){
         },time*1000);
     }
     function countdown(time){
-        console.debug($('#canvas-draw').height());
-        //['#canvas-freedraw', '#canvas-focus', '#canvas-draw', '.upper-canvas '].forEach(o=>{ $(o).css({'height': '1080px','width': '1920px'}) })
-        //['#canvas-freedraw', '#canvas-focus', '#canvas-draw', '.upper-canvas '].forEach((o)=>{ $(o).css({'height': '1080px','width': '1920px'}) })
-
         $("#"+uniqueid+" #countdown img").attr("src", chrome.extension.getURL('./assets/images/3-countdown.svg'));
         for (var i = 0; i <= time; i++) {
             if (i == time) {
@@ -416,17 +412,29 @@ $(document).ready(function(){
     
     // Resize canvas to fit document
     function onResize() {
-        canvas.setWidth($(document).width());
-        canvas.setHeight($(document).height());
+        // canvas.setWidth($(document).width());
+        // canvas.setHeight($(document).height());
+        // canvas.renderAll();
+        // canvas_free.style.width = $(document).width();
+        // canvas_free.style.height = $(document).height();
+        // canvas_free.width = $(document).width();
+        // canvas_free.height = $(document).height();
+        // canvas_focus.style.width = $(document).width();
+        // canvas_focus.style.height = $(document).height();
+        // canvas_focus.width = $(document).width();
+        // canvas_focus.height = $(document).height();
+        
+        canvas.setWidth(1920);
+        canvas.setHeight(1080);
         canvas.renderAll();
-        canvas_free.style.width = $(document).width();
-        canvas_free.style.height = $(document).height();
-        canvas_free.width = $(document).width();
-        canvas_free.height = $(document).height();
-        canvas_focus.style.width = $(document).width();
-        canvas_focus.style.height = $(document).height();
-        canvas_focus.width = $(document).width();
-        canvas_focus.height = $(document).height();
+        canvas_free.style.width = 1920;
+        canvas_free.style.height = 1080;
+        canvas_free.width = 1920;
+        canvas_free.height = 1080;
+        canvas_focus.style.width = 1920;
+        canvas_focus.style.height = 1080;
+        canvas_focus.width = 1920;
+        canvas_focus.height = 1080;
     }
     
     // Detect document dimensions changing
